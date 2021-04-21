@@ -204,7 +204,7 @@ try:
         "RAW": oracletypes.RAW,
         "TIMESTAMP": oracletypes.TIMESTAMP,
         "VARCHAR": oracletypes.VARCHAR,
-        "VARCHAR2": oracletypes.VARCHAR2, 
+        "VARCHAR2": oracletypes.VARCHAR2,
     }
 except (ImportError, KeyError):
     oracletypes = None
