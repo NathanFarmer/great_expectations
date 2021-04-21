@@ -182,6 +182,35 @@ except (ImportError, KeyError):
     mssqlDialect = None
     MSSQL_TYPES = {}
 
+try:
+    import sqlalchemy.dialects.oracle as oracletypes
+    from sqlalchemy.dialects.oracle import dialect as oracleDialect
+
+    ORACLE_TYPES = {
+        "BFILE": oracletypes.BFILE,
+        "BLOB": oracletypes.BLOB,
+        "CHAR": oracletypes.CHAR,
+        "CLOB": oracletypes.CLOB,
+        "DATE": oracletypes.DATE,
+        "DOUBLE_PRECISION": oracletypes.DOUBLE_PRECISION,
+        "FLOAT": oracletypes.FLOAT,
+        "INTERVAL": oracletypes.INTERVAL,
+        "LONG": oracletypes.LONG,
+        "NCLOB": oracletypes.NCLOB,
+        "NCHAR": oracletypes.NCHAR,
+        "NUMBER": oracletypes.NUMBER,
+        "NVARCHAR": oracletypes.NVARCHAR,
+        "NVARCHAR2": oracletypes.NVARCHAR2,
+        "RAW": oracletypes.RAW,
+        "TIMESTAMP": oracletypes.TIMESTAMP,
+        "VARCHAR": oracletypes.VARCHAR,
+        "VARCHAR2": oracletypes.VARCHAR2, 
+    }
+except (ImportError, KeyError):
+    oracletypes = None
+    oracleDialect = None
+    ORACLE_TYPES = {}
+
 
 class SqlAlchemyConnectionManager:
     def __init__(self):
