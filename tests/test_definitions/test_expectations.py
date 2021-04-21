@@ -19,6 +19,7 @@ from great_expectations.self_check.util import (
     mysqlDialect,
     postgresqlDialect,
     sqliteDialect,
+    oracleDialect,
 )
 
 from ..conftest import build_test_backends_list
