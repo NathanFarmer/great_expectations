@@ -837,12 +837,14 @@ def build_sa_validator_with_data(
         "postgresql": postgresqltypes.dialect,
         "mysql": mysqltypes.dialect,
         "mssql": mssqltypes.dialect,
+        "oracle": oracletypes.dialect,
     }
     dialect_types = {
         "sqlite": SQLITE_TYPES,
         "postgresql": POSTGRESQL_TYPES,
         "mysql": MYSQL_TYPES,
         "mssql": MSSQL_TYPES,
+        "oracle": ORACLE_TYPES,
     }
     db_hostname = os.getenv("GE_TEST_LOCAL_DB_HOSTNAME", "localhost")
     if sa_engine_name == "sqlite":
