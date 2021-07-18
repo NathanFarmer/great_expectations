@@ -14,7 +14,7 @@ from dateutil.parser import parse
 from tqdm.auto import tqdm
 
 from great_expectations import __version__ as ge_version
-from great_expectations.core.batch import Batch, BatchDefinition
+from great_expectations.core.batch import Batch
 from great_expectations.core.expectation_configuration import ExpectationConfiguration
 from great_expectations.core.expectation_suite import (
     ExpectationSuite,
@@ -29,7 +29,6 @@ from great_expectations.core.run_identifier import RunIdentifier
 from great_expectations.data_asset.util import recursively_convert_to_json_serializable
 from great_expectations.dataset import PandasDataset, SparkDFDataset, SqlAlchemyDataset
 from great_expectations.dataset.sqlalchemy_dataset import SqlAlchemyBatchReference
-from great_expectations.datasource import DataConnector, Datasource
 from great_expectations.exceptions import (
     GreatExpectationsError,
     InvalidExpectationConfigurationError,
@@ -266,7 +265,10 @@ class Validator:
                     exception_traceback = traceback.format_exc()
                     exception_message = "{}: {}".format(type(err).__name__, str(err))
 
-                    validation_result = ExpectationValidationResult(success=False)
+                    validation_result = ExpectationValidationResult(
+                        expectation_config=configuration,
+                        success=False,
+                    )
 
                     validation_result.exception_info = {
                         "raised_exception": raised_exception,
@@ -287,7 +289,7 @@ class Validator:
         return self._execution_engine
 
     def list_available_expectation_types(self):
-        """ Returns a list of all expectations available to the validator"""
+        """Returns a list of all expectations available to the validator"""
         keys = dir(self)
         return [
             expectation for expectation in keys if expectation.startswith("expect_")
@@ -460,6 +462,7 @@ class Validator:
                             "exception_traceback": exception_traceback,
                             "exception_message": str(err),
                         },
+                        expectation_config=configuration,
                     )
                     evrs.append(result)
                 else:
@@ -489,6 +492,7 @@ class Validator:
                             "exception_traceback": exception_traceback,
                             "exception_message": str(err),
                         },
+                        expectation_config=configuration,
                     )
                     evrs.append(result)
                 else:

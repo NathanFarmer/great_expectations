@@ -5,7 +5,10 @@ import pytest
 
 import great_expectations.exceptions as ge_exceptions
 from great_expectations.core.batch import Batch
-from great_expectations.execution_engine import PandasExecutionEngine
+from great_expectations.execution_engine import (
+    PandasExecutionEngine,
+    SparkDFExecutionEngine,
+)
 from great_expectations.execution_engine.sqlalchemy_execution_engine import (
     SqlAlchemyBatchData,
     SqlAlchemyExecutionEngine,
@@ -1040,7 +1043,7 @@ def test_z_score_under_threshold_spark(spark_session):
     assert results[desired_metric.id] == 0
 
 
-def test_table_metric_pd():
+def test_table_metric_pd(caplog):
     df = pd.DataFrame({"a": [1, 2, 3, 3, None], "b": [1, 2, 3, 3, None]})
     engine = PandasExecutionEngine(batch_data_dict={"my_id": df})
     desired_metric = MetricConfiguration(
@@ -1050,6 +1053,10 @@ def test_table_metric_pd():
     )
     results = engine.resolve_metrics(metrics_to_resolve=(desired_metric,))
     assert results == {desired_metric.id: 5}
+    assert (
+        'Unexpected key(s) "column" found in domain_kwargs for domain type "table"'
+        in caplog.text
+    )
 
 
 def test_column_pairs_equal_metric_pd():
